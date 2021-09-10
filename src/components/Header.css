@@ -1,0 +1,26 @@
+.header {
+  background-color: #121a24;
+}
+
+.toy-navbar {
+  display: flex;
+  width: 100%;
+}
+
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  list-style-type: none;
+  background-color: #121a24;
+  padding: 15px 200px;
+}
+
+li > a {
+    color: white;
+    text-decoration: none;
+    margin-right: 25px;
+    font-size: 14px;
+    font-weight: 600;
+}
