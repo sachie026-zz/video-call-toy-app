@@ -7,13 +7,13 @@ const Header = () => {
     <nav className="toy-navbar">
       <ul className="navbar-nav">
         <li>
-          <NavLink to={"/"} activeClassName="is-active" className="nav-link">
+          <NavLink exact to="/" activeClassName="is-active" className="nav-link">
             Home
           </NavLink>
         </li>
         <li>
           <NavLink
-            to={"/dashboard"}
+            to="/dashboard"
             activeClassName="is-active"
             className="nav-link"
           >
@@ -22,7 +22,7 @@ const Header = () => {
         </li>
         <li>
           <NavLink
-            to={"/joinroom"}
+            to="/joinroom"
             activeClassName="is-active"
             className="nav-link"
           >
