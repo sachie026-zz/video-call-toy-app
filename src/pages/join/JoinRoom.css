@@ -1,0 +1,50 @@
+.room-details-container {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-details-section {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 35px 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 25px;
+}
+
+.room-details-section input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 40%;
+  flex: 1;
+  outline: none;
+}
+
+.room-details-section span {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+  padding-left: 25px;
+}
+
+.room-details-section button {
+  font-size: 14px;
+  background: #1bebb9;
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 0px;
+}
+
+.room-join-section,
+#joinCallFrame {
+  height: 575px;
+  width: 800px;
+  border-radius: 5px;
+}
+
+#joinCallFrame {
+  border: 1px solid #ddd;
+}
