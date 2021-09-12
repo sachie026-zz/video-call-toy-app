@@ -1,0 +1,53 @@
+.room-table {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-top: 25px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #ddd;
+}
+
+.room-table-header {
+  padding: 15px;
+  background: #f0f0f0;
+  display: flex;
+}
+
+.room-table-header span {
+    flex: 1;
+    font-size: 14px;
+  }
+
+.room-table-row {
+  padding: 15px;
+  display: flex;
+}
+
+.room-table-row span {
+    flex: 1;
+  font-size: 14px;
+}
+
+.room-table-row :first-child {
+  font-weight: 600;
+  width: 400px;
+}
+
+.room-table-row button {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 0px;
+    color: white;
+    background: #f63135;
+  }
+
+.room-label {
+  font-size: 16px;
+  font-weight: 600;
+}

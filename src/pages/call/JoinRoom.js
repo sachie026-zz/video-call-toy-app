@@ -12,6 +12,7 @@ const JoinRoom = () => {
     },
   });
   //iframe.join({ url: "https://sachie026.daily.co/FirstRoom" });
+  iframe.getNetworkStats()
   console.log("iframe", iframe);
 
   return <div>JoinRoom</div>;

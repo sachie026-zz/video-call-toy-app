@@ -1,5 +1,6 @@
 body,
-html {
+html,
+#root {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -45,5 +46,5 @@ html {
 }
 
 .data-container {
-  padding: 35px 200px;
+  padding: 50px 200px;
 }

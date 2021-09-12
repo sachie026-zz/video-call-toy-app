@@ -16,6 +16,11 @@ const Header = () => {
             Dashboard
           </Link>
         </li>
+        <li>
+          <Link to={"/newroom"} className="nav-link">
+            New Video Call
+          </Link>
+        </li>
       </ul>
     </nav>
   );
