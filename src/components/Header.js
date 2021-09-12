@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
@@ -7,7 +7,12 @@ const Header = () => {
     <nav className="toy-navbar">
       <ul className="navbar-nav">
         <li>
-          <NavLink exact to="/" activeClassName="is-active" className="nav-link">
+          <NavLink
+            exact
+            to="/"
+            activeClassName="is-active"
+            className="nav-link"
+          >
             Home
           </NavLink>
         </li>

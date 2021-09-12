@@ -55,7 +55,12 @@ const Home = () => {
           buttonDisabled={roomName && roomName.length > 0 ? false : true}
         />
       )}
-      {roomCreated && <RoomFrame roomData={roomData} />}
+      {roomCreated && (
+        <RoomFrame
+          roomData={roomData}
+          onLeaveRoom={() => setRoomCreated(false)}
+        />
+      )}
     </div>
   );
 };

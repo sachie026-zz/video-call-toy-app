@@ -3,7 +3,7 @@ import DailyIframe from "@daily-co/daily-js";
 import "./Home.css";
 
 const RoomFrame = (props) => {
-  const { roomData } = props;
+  const { roomData, onLeaveRoom } = props;
   let callFrame = null;
 
   const getStats = async () => {
@@ -51,6 +51,7 @@ const RoomFrame = (props) => {
           console.log("participants left", e);
         })
         .on("left-meeting", (e) => {
+          onLeaveRoom();
           console.log("left meeting", e);
         });
 

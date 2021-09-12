@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react";
-import "./JoinRoom.css";
 import DailyIframe from "@daily-co/daily-js";
+import "./JoinRoom.css";
 
 const JoinRoom = () => {
   const [roomJoined, setRoomJoined] = useState(false);
+  const [callFrameState, setCallFrameState] = useState(null);
   const [roomJoiningStatus, setRoomJoiningStatus] = useState("");
   const [roomUrl, setRoomUrl] = useState("");
 
   let callFrame = null;
+
+  const getStats = async () => {
+    console.log("callFrame.getNetworkStats()", callFrame);
+    if (callFrameState) {
+      const stats = await callFrameState.getNetworkStats();
+      const sess = await callFrameState.room();
+
+      console.log("callFrame.getNetworkStats()", callFrame, stats, sess);
+    }
+  };
+
   const joinRoom = async () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     callFrame = DailyIframe.createFrame(
@@ -52,30 +64,36 @@ const JoinRoom = () => {
         console.log("left meeting", e);
       });
 
+    setCallFrameState(callFrame);
     callFrame.join({ url: roomUrl, showLeaveButton: true });
   };
 
   return (
     <div className="data-container room-details-container">
-      {!roomJoined && (
-        <>
-          <span className="new-room-label">Join room</span>
-          <div className="room-details-section">
-            <input
-              type="text"
-              placeholder="Enter room url..."
-              onChange={(e) => setRoomUrl(e.target.value)}
-            />
-            <span>Provide room url and join</span>
-            <button onClick={joinRoom}>Join room</button>
-          </div>
-        </>
-      )}
-      {roomJoined && (
-        <div className="room-join-section">
+      <div className="room-details-section-container">
+        <span className="new-room-label">Join room</span>
+        <div className="room-details-section">
+          <input
+            type="text"
+            placeholder="Enter room url..."
+            onChange={(e) => setRoomUrl(e.target.value)}
+          />
+          <span>Provide room url and join</span>
+          <button onClick={joinRoom} disabled={roomJoined}>
+            Join room
+          </button>
+        </div>
+      </div>
+
+      <div className="room-join-section">
+        <div className="room-frame">
           <div id="joinCallFrame"></div>
         </div>
-      )}
+        <div className="room-stats">
+          {roomJoined ? <button onClick={getStats}>Get stats</button> : null}
+        </div>
+      </div>
+      {/* <JoinRoomFrame roomUrl={roomUrl} /> */}
     </div>
   );
 };
