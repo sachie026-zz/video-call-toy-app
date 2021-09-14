@@ -59,7 +59,7 @@
   cursor: pointer;
 }
 
-.room-label {
+.room-label, .participants-label {
   font-size: 16px;
   font-weight: 600;
 }

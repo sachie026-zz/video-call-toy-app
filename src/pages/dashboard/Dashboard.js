@@ -5,6 +5,7 @@ import Table from "./Table";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import ParticipantsTable from "./ParticipantsTable";
+import BackButton from "../../components/BackButton";
 
 const Dashboard = () => {
   const [rooms, setRooms] = useState([]);
@@ -21,8 +22,11 @@ const Dashboard = () => {
   };
 
   const onNameClick = (index) => {
-    console.log(index);
     setSelectedRoomIndex(index);
+  };
+
+  const goBack = () => {
+    setSelectedRoomIndex(null);
   };
 
   useEffect(() => {
@@ -31,12 +35,15 @@ const Dashboard = () => {
 
   return (
     <div className="data-container">
-      {selectedRoomIndex >= 0 ? (
-        `${rooms[selectedRoomIndex].name} participants`
+      {selectedRoomIndex !== null ? (
+        <>
+          <BackButton previous="Rooms" goBack={goBack} />
+          <span className="participants-label">{`${rooms[selectedRoomIndex].name} participants`}</span>
+        </>
       ) : (
         <div className="room-label">Your rooms</div>
       )}
-      {selectedRoomIndex >= 0 ? (
+      {selectedRoomIndex !== null ? (
         <ParticipantsTable
           participants={rooms[selectedRoomIndex].participants}
         />
