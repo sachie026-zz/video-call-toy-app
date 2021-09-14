@@ -59,6 +59,7 @@ const Home = () => {
         <RoomFrame
           roomData={roomData}
           onLeaveRoom={() => setRoomCreated(false)}
+          roomName={roomName}
         />
       )}
     </div>

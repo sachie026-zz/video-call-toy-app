@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DailyIframe from "@daily-co/daily-js";
+
+import { updateParticipant } from "../../utils/Network";
+import { JOINED_MEETING } from "../../common/constants";
+
 import "./JoinRoom.css";
 
 const JoinRoom = () => {
@@ -16,7 +20,7 @@ const JoinRoom = () => {
       const stats = await callFrameState.getNetworkStats();
       const sess = await callFrameState.room();
 
-      console.log("callFrame.getNetworkStats()", callFrame, stats, sess);
+      console.log("callFrame.getNetworkStats()", stats, sess);
     }
   };
 
@@ -41,11 +45,18 @@ const JoinRoom = () => {
       .on("joining-meeting", (e) => {
         console.log("joining meeting", e);
       })
-      .on("joined-meeting", (e) => {
-        if (e.action === "joined-meeting") {
-          setRoomJoined(true);
-        }
-        console.log("joined meeting", e);
+      .on("joined-meeting", async (e) => {
+        const roomUrlArray = roomUrl.split("/");
+        const roomName = roomUrlArray[roomUrlArray.length - 1];
+        await updateParticipant(roomName, e.participants.local.user_id);
+        setRoomJoined(true);
+
+        console.log(
+          "joined meeting",
+          e,
+          roomName,
+          e.participants.local.user_id
+        );
       })
       .on("error", (e) => {
         console.log("error", e);
@@ -61,6 +72,9 @@ const JoinRoom = () => {
       })
       .on("left-meeting", (e) => {
         setRoomJoined(false);
+        callFrame.leave();
+        callFrame = null;
+        document.getElementById("joinCallFrame").innerHTML = "";
         console.log("left meeting", e);
       });
 
@@ -93,7 +107,6 @@ const JoinRoom = () => {
           {roomJoined ? <button onClick={getStats}>Get stats</button> : null}
         </div>
       </div>
-      {/* <JoinRoomFrame roomUrl={roomUrl} /> */}
     </div>
   );
 };

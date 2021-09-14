@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import DailyIframe from "@daily-co/daily-js";
+
+import { updateParticipant } from "../../utils/Network";
+import { JOINED_MEETING } from "../../common/constants";
 import "./Home.css";
 
 const RoomFrame = (props) => {
-  const { roomData, onLeaveRoom } = props;
+  const { roomData, onLeaveRoom, roomName } = props;
   let callFrame = null;
 
   const getStats = async () => {
@@ -36,7 +39,10 @@ const RoomFrame = (props) => {
           console.log("joining meeting", e);
         })
         .on("joined-meeting", (e) => {
-          console.log("joined meeting", e);
+          if (e.action === JOINED_MEETING && e.participants) {
+            updateParticipant(roomName, e.participants.local.user_id);
+          }
+          // console.log("joined meeting", e);
         })
         .on("error", (e) => {
           console.log("error", e);
@@ -52,6 +58,10 @@ const RoomFrame = (props) => {
         })
         .on("left-meeting", (e) => {
           onLeaveRoom();
+          callFrame.leave();
+          callFrame = null;
+          document.getElementById("callframe").innerHTML = "";
+  
           console.log("left meeting", e);
         });
 
