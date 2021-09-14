@@ -1,17 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DailyIframe from "@daily-co/daily-js";
 
-import { updateParticipant } from "../../utils/Network";
-import { JOINED_MEETING } from "../../common/constants";
+import { updateParticipant, addMetric } from "../../utils/Network";
 import "./Home.css";
 
 const RoomFrame = (props) => {
   const { roomData, onLeaveRoom, roomName } = props;
   let callFrame = null;
+  let inervalId = null;
 
-  const getStats = async () => {
-    const stats = await callFrame.getNetworkStats();
-    console.log("callFrame.getNetworkStats()", callFrame, stats);
+  const getStats = async (userId) => {
+    inervalId = setInterval(async () => {
+      if (callFrame) {
+        const stats = await callFrame.getNetworkStats();
+        console.log();
+        const metricsData = {
+          userid: userId,
+          roomname: roomName,
+          videoRecvBitsPerSecond: stats.stats.latest.videoRecvBitsPerSecond,
+          videoRecvPacketLoss: stats.stats.latest.videoRecvPacketLoss,
+          videoSendBitsPerSecond: stats.stats.latest.videoSendBitsPerSecond,
+          videoSendPacketLoss: stats.stats.latest.videoSendPacketLoss,
+        };
+        await addMetric(metricsData);
+        console.log("callFrame.getNetworkStats()", callFrame, stats);
+      } else {
+        clearInterval(inervalId);
+      }
+    }, 15000);
   };
 
   useEffect(() => {
@@ -32,36 +48,20 @@ const RoomFrame = (props) => {
       );
 
       callFrame
-        .on("loaded", (e) => {
-          console.log("loaded", e);
-        })
-        .on("joining-meeting", (e) => {
-          console.log("joining meeting", e);
-        })
         .on("joined-meeting", (e) => {
-          if (e.action === JOINED_MEETING && e.participants) {
-            updateParticipant(roomName, e.participants.local.user_id);
-          }
-          // console.log("joined meeting", e);
+          // setUserId(e.participants.local.user_id);
+          updateParticipant(roomName, e.participants.local.user_id);
+          getStats(e.participants.local.user_id);
         })
         .on("error", (e) => {
           console.log("error", e);
-        })
-        .on("participant-joined", (e) => {
-          console.log("participant joined", e);
-        })
-        .on("participant-updated", (e) => {
-          console.log("participant updatd", e);
-        })
-        .on("participant-left", (e) => {
-          console.log("participants left", e);
         })
         .on("left-meeting", (e) => {
           onLeaveRoom();
           callFrame.leave();
           callFrame = null;
           document.getElementById("callframe").innerHTML = "";
-  
+          clearInterval(inervalId);
           console.log("left meeting", e);
         });
 
@@ -69,6 +69,10 @@ const RoomFrame = (props) => {
     };
     joinRoom();
   }, [roomData]);
+
+  useEffect(() => {
+    return clearInterval(inervalId);
+  }, [inervalId]);
 
   return (
     <div className="frame-container">

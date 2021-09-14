@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
-import { getRooms, createRoom } from "../../utils/Network";
+import { createRoom } from "../../utils/Network";
 import CreateRoom from "./CreateRoom";
 import RoomFrame from "./RoomFrame";
 
@@ -18,34 +18,8 @@ const Home = () => {
     if (roomData && roomData.name && roomData.api_created) {
       setRoomCreated(true);
     }
-    console.log("roomData", roomData);
   }, [roomData]);
 
-  /*
-  callFrame = await window.DailyIframe.createFrame(
-    document.getElementById('callframe'),
-    {
-      iframeStyle: {
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        width: '100%',
-        height: '90%',
-        border: '0',
-      },
-    }
-  );
-
-  callFrame
-    .on('loaded', showEvent)
-    .on('joining-meeting', showEvent)
-    .on('joined-meeting', showCallDisplay)
-    .on('error', showEvent)
-    .on('participant-joined', updateParticipantInfoDisplay)
-    .on('participant-updated', updateParticipantInfoDisplay)
-    .on('participant-left', updateParticipantInfoDisplay)
-    .on('left-meeting', hideCallDisplay);
-  */
   return (
     <div className="data-container">
       {!roomCreated && (
