@@ -24,7 +24,7 @@
 }
 
 .room-table-header :first-child {
-  width: 250px;
+  width: 350px;
 }
 
 .room-table-row {
@@ -39,7 +39,9 @@
 
 .room-table-row :first-child {
   font-weight: 600;
-  width: 250px;
+  width: 350px;
+  cursor: pointer;
+
 }
 
 .room-table-row :nth-child(2) {

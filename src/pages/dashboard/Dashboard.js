@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { getRooms, deleteRoom } from "../../utils/Network";
+import Table from "./Table";
+import TableHeader from "./TableHeader";
+import TableRow from "./TableRow";
+import ParticipantsTable from "./ParticipantsTable";
 
 const Dashboard = () => {
   const [rooms, setRooms] = useState([]);
+  const [selectedRoomIndex, setSelectedRoomIndex] = useState(null);
   const fetchAllRooms = () => {
     getRooms()
       .then((response) => response.json())
@@ -15,33 +20,45 @@ const Dashboard = () => {
     await fetchAllRooms();
   };
 
+  const onNameClick = (index) => {
+    console.log(index);
+    setSelectedRoomIndex(index);
+  };
+
   useEffect(() => {
     fetchAllRooms();
   }, []);
 
   return (
     <div className="data-container">
-      <div className="room-label">Your rooms</div>
-      <div className="room-table">
-        <div className="room-table-header border-bottom">
-          <span>Room name</span>
-          <span>Date created</span>
-        </div>
-
-        {rooms.map((room, index) => (
-          <div className="room-table-row" key={`room${index}`}>
-            <span>{room.name}</span>
-            <span>{new Date(room.created_at).toString()}</span>
-            <button onClick={() => onDeleteClick(room.name)}>Delete</button>
-          </div>
-        ))}
-        {rooms.length === 0 ? (
-          <div className="room-table-row" key={`roomnodata`}>
-            <span></span>
-            <span>No rooms</span>
-          </div>
-        ) : null}
-      </div>
+      {selectedRoomIndex >= 0 ? (
+        `${rooms[selectedRoomIndex].name} participants`
+      ) : (
+        <div className="room-label">Your rooms</div>
+      )}
+      {selectedRoomIndex >= 0 ? (
+        <ParticipantsTable
+          participants={rooms[selectedRoomIndex].participants}
+        />
+      ) : (
+        <Table>
+          <TableHeader columns={["Room name", "Date created"]} />
+          {rooms.map((room, index) => (
+            <TableRow
+              columns={[room.name, new Date(room.created_at).toString()]}
+              key={`room${index}`}
+              onFirstColumnClick={(columnIndex) =>
+                columnIndex === 0 ? onNameClick(index) : null
+              }
+              onDeleteClick={onDeleteClick}
+              isRoom
+            />
+          ))}
+          {rooms.length === 0 ? (
+            <TableRow columns={["", "No rooms"]} key="roomnodata" />
+          ) : null}
+        </Table>
+      )}
     </div>
   );
 };
