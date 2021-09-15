@@ -10,11 +10,12 @@ const RoomsTable = (props) => {
 
   return (
     <Table>
-      <TableHeader columns={["Room name", "Date created"]} />
+      <TableHeader columns={["Room name", "Date created"]} compkey="rooms" />
       {rooms.map((room, index) => (
         <TableRow
           columns={[room.name, new Date(room.created_at).toString()]}
-          key={`room${index}`}
+          key={`rooms${index}`}
+          rowKey={`room${index}`}
           index={index}
           onFirstColumnClick={onFirstColumnClick}
           onDeleteClick={onDeleteClick}

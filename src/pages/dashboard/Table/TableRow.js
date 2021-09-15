@@ -3,7 +3,7 @@ import React from "react";
 const TableRow = (props) => {
   const {
     columns,
-    key,
+    rowKey,
     isRoomTable,
     onDeleteClick,
     onShowMetrics,
@@ -12,10 +12,10 @@ const TableRow = (props) => {
   } = props;
 
   return (
-    <div className="room-table-row" key={key}>
+    <div className="room-table-row" key={rowKey}>
       {columns.map((column, columnIndex) => (
         <span
-          key={`header${index}`}
+          key={`${rowKey}${columnIndex}${index}`}
           onClick={() => onFirstColumnClick(columnIndex, index)}
         >
           {column}

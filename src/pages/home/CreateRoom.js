@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import "./Home.css";
 
-const noop = () => null;
-
 const CreateRoom = (props) => {
+  const noop = useCallback(() => null, []);
   const { onCreateRoom, buttonDisabled, onNameChange } = props;
 
   const onNameInputChange = (e) => onNameChange(e.target.value);

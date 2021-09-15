@@ -2,10 +2,12 @@ import React from "react";
 import "./BackButton.css";
 
 const BackButton = (props) => {
-  const { previous, goBack } = props;
-  
+  const { goBack } = props;
+
   return (
-    <span className="back-button" onClick={goBack}>{`${previous}  >  `}</span>
+    <span className="back-button" onClick={goBack}>
+      Go back &nbsp;
+    </span>
   );
 };
 

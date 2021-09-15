@@ -4,11 +4,14 @@ import { getRooms, deleteRoom } from "../../utils/ApiUtil";
 import RoomsTable from "./RoomsTable";
 import ParticipantsTable from "./ParticipantsTable";
 import DashboardHeader from "./DashboardHeader";
+import MetricsData from "./Chart/MetricsData";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const [rooms, setRooms] = useState([]);
   const [selectedRoomIndex, setSelectedRoomIndex] = useState(null);
+  const [selectedParticipantIndex, setSelectedParticipantIndex] =
+    useState(null);
 
   const fetchAllRooms = () => {
     getRooms()
@@ -21,16 +24,20 @@ const Dashboard = () => {
     await fetchAllRooms();
   }, []);
 
-  const onNameClick = (index) => {
-    setSelectedRoomIndex(index);
-  };
-
   const goBack = useCallback(() => {
-    setSelectedRoomIndex(null);
+    if (selectedParticipantIndex !== null) {
+      setSelectedParticipantIndex(null);
+    } else if (selectedRoomIndex !== null) {
+      setSelectedRoomIndex(null);
+    }
+  }, [selectedParticipantIndex, selectedRoomIndex]);
+
+  const onRoomNameClick = useCallback((columnIndex, index) => {
+    if (columnIndex === 0) setSelectedRoomIndex(index);
   }, []);
 
-  const onFirstColumnClick = useCallback((columnIndex, index) => {
-    if (columnIndex === 0) onNameClick(index);
+  const onParticipantClick = useCallback((columnIndex, index) => {
+    if (columnIndex === 0) setSelectedParticipantIndex(index);
   }, []);
 
   useEffect(() => {
@@ -48,13 +55,29 @@ const Dashboard = () => {
       />
 
       {selectedRoomIndex !== null ? (
-        <ParticipantsTable
-          participants={rooms[selectedRoomIndex].participants}
-        />
+        selectedParticipantIndex !== null ? (
+          <MetricsData
+            selectedParticipantId={
+              selectedRoomIndex !== null
+                ? rooms[selectedRoomIndex].participants[
+                    selectedParticipantIndex
+                  ].userid
+                : ""
+            }
+            roomName={
+              selectedRoomIndex !== null ? rooms[selectedRoomIndex].name : ""
+            }
+          />
+        ) : (
+          <ParticipantsTable
+            participants={rooms[selectedRoomIndex].participants}
+            onFirstColumnClick={onParticipantClick}
+          />
+        )
       ) : (
         <RoomsTable
           rooms={rooms}
-          onFirstColumnClick={onFirstColumnClick}
+          onFirstColumnClick={onRoomNameClick}
           onDeleteClick={onDeleteClick}
         />
       )}
