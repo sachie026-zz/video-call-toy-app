@@ -76,11 +76,20 @@
 .frame-container {
   display: flex;
   flex: 1;
-  height: 500px;
+  height: 700px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 30px 20px;
 }
 
 #callframe {
-  flex: 1;
+  margin-right: 50px;
+}
+
+.callframe-data{
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
 }
 
 .share-room-label {

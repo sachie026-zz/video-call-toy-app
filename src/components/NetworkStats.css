@@ -2,20 +2,32 @@
   margin-top: 50px;
 }
 
-.network-stats-label{
+.network-stats-label {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 25px;
   display: flex;
 }
 
-.netowrk-stats-row{
+.netowrk-stats-row {
   padding: 5px 0px;
   display: flex;
   flex-direction: column;
 }
 
-.netowrk-stats-row span{
+.netowrk-stats-row span {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.row-key {
+  font-size: 14px;
+  margin-top: 10px;
   color: #666;
-  font-size: 14px;  
+}
+
+.row-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: black;
 }

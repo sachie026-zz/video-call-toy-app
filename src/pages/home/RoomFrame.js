@@ -25,7 +25,7 @@ const RoomFrame = (props) => {
       if (callFrame) {
         const networkStats = await callFrame.getNetworkStats();
         const metricsData = buildMetricsData(userId, networkStats, roomName);
-        statsData.current = networkStats.stats;
+        statsData.current = networkStats.stats.latest;
         await addMetric(metricsData);
       } else {
         clearInterval(inervalId);
@@ -76,15 +76,16 @@ const RoomFrame = (props) => {
   return (
     <div className="frame-container">
       <div id="callframe"></div>
-      <div>
+      <div className="callframe-data">
         <div className="share-room-label">
           <span>Share URL below to invite others</span>
           <div className="copy-url-section">
             <span>{roomData ? roomData.url : "--"}</span>
-            {/* <button onClick={onCopyUrl}>Copy URL</button> */}
           </div>
         </div>
-        {true ? <NetworkStats /> : null}
+        {statsData && statsData.current ? (
+          <NetworkStats networkStats={statsData.current} />
+        ) : null}
       </div>
     </div>
   );

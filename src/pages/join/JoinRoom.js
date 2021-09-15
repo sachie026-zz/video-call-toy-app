@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import DailyIframe from "@daily-co/daily-js";
 
+import NetworkStats from "../../components/NetworkStats";
+import NoRoomJoined from "./NoRoomJoined";
 import { updateParticipant, addMetric } from "../../utils/ApiUtil";
 import { buildMetricsData } from "../../utils/SharedUtil";
 import "./JoinRoom.css";
 
 const JoinRoom = () => {
   const [roomJoined, setRoomJoined] = useState(false);
-  const [callFrameState, setCallFrameState] = useState(null);
+  // const [callFrameState, setCallFrameState] = useState(null);
   const [roomUrl, setRoomUrl] = useState("");
+  const callFrameState = useRef(null);
+  const networkStatRef = useRef(null);
 
   let callFrame = null;
   let inervalId = useRef(null);
@@ -18,12 +22,11 @@ const JoinRoom = () => {
   const getNetworkStats = useCallback(
     async (userId, roomName) => {
       let intervalIndex = setInterval(async () => {
-        if (callFrameState) {
-          const networkStats = await callFrameState.getNetworkStats();
+        if (callFrameState.current) {
+          const networkStats = await callFrameState.current.getNetworkStats();
           const metricsData = buildMetricsData(userId, networkStats, roomName);
+          networkStatRef.current = networkStats.stats.latest;
           await addMetric(metricsData);
-        } else {
-          clearInterval(inervalId);
         }
       }, 15000); // polling for stats after every 15 seconds
       inervalId.current = intervalIndex;
@@ -44,6 +47,7 @@ const JoinRoom = () => {
 
   const onMeetingLeft = () => {
     setRoomJoined(false);
+    networkStatRef.current = null;
     document.getElementById("joinCallFrame").innerHTML = "";
   };
 
@@ -74,7 +78,7 @@ const JoinRoom = () => {
         onMeetingLeft();
       });
 
-    setCallFrameState(callFrame);
+    callFrameState.current = callFrame;
     console.log("roomUrl", roomUrl);
     callFrame.join({ url: roomUrl, showLeaveButton: true });
   }, [roomUrl]);
@@ -105,10 +109,11 @@ const JoinRoom = () => {
           <div id="joinCallFrame"></div>
         </div>
         <div className="room-stats">
-          {roomJoined ? (
-            <button onClick={getNetworkStats}>Get stats</button>
+          {networkStatRef && networkStatRef.current ? (
+            <NetworkStats networkStats={networkStatRef.current} />
           ) : null}
         </div>
+        {!roomJoined ? <NoRoomJoined /> : null}
       </div>
     </div>
   );
