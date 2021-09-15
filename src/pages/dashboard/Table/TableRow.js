@@ -6,7 +6,6 @@ const TableRow = (props) => {
     rowKey,
     isRoomTable,
     onDeleteClick,
-    onShowMetrics,
     onFirstColumnClick,
     index,
   } = props;
@@ -23,9 +22,7 @@ const TableRow = (props) => {
       ))}
       {isRoomTable ? (
         <button onClick={() => onDeleteClick(columns[0])}>Delete</button>
-      ) : (
-        <button onClick={onShowMetrics}>Show Metrics</button>
-      )}
+      ) : null}
     </div>
   );
 };
