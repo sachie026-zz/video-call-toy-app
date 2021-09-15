@@ -79,7 +79,6 @@ const JoinRoom = () => {
       });
 
     callFrameState.current = callFrame;
-    console.log("roomUrl", roomUrl);
     callFrame.join({ url: roomUrl, showLeaveButton: true });
   }, [roomUrl]);
 

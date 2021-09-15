@@ -3,7 +3,6 @@ import "./NetworkStats.css";
 
 const NetworkStats = (props) => {
   const { networkStats } = props;
-  console.log("networkStats", networkStats);
   return (
     <div className="network-stats-container">
       <span className="network-stats-label">Network Stats</span>

@@ -26,7 +26,6 @@ export const deleteRoom = async (name) => {
 };
 
 export const updateParticipant = async (name, userid) => {
-  console.log("updateParticipant");
   return await fetch(`${BASE_URL}${PARTICIPANTS}/${name}`, {
     method: "PUT",
     headers: HEADERS,
