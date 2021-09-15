@@ -1,12 +1,15 @@
-import { BASE_URL, ROOMS, PARTICIPANTS, METRICS } from "../common/constants";
+import {
+  BASE_URL,
+  ROOMS,
+  PARTICIPANTS,
+  METRICS,
+  HEADERS,
+} from "../common/constants";
 
 export const createRoom = async (name) => {
   return await fetch(`${BASE_URL}${ROOMS}/${name}`, {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers: HEADERS,
     body: JSON.stringify({ name: name, privacy: "public" }),
   });
 };
@@ -18,41 +21,23 @@ export const getRooms = async () => {
 export const deleteRoom = async (name) => {
   return await fetch(`${BASE_URL}${ROOMS}/${name}`, {
     method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers: HEADERS,
   });
 };
 
 export const updateParticipant = async (name, userid) => {
-  console.log('updateParticipant');
+  console.log("updateParticipant");
   return await fetch(`${BASE_URL}${PARTICIPANTS}/${name}`, {
     method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers: HEADERS,
     body: JSON.stringify({ userid: userid }),
   });
 };
 
-export const addMetric = async (data) => {
-  const metricData = {
-    id: data.userid,
-    name: data.roomname,
-    videoRecvBitsPerSecond: data.videoRecvBitsPerSecond,
-    videoRecvPacketLoss: data.videoRecvPacketLoss,
-    videoSendBitsPerSecond: data.videoSendBitsPerSecond,
-    videoSendPacketLoss: data.videoSendPacketLoss,
-  };
-
+export const addMetric = async (metricData) => {
   return await fetch(`${BASE_URL}${METRICS}`, {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers: HEADERS,
     body: JSON.stringify(metricData),
   });
 };

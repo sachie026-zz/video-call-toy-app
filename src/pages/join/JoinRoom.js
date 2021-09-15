@@ -1,30 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import DailyIframe from "@daily-co/daily-js";
 
-import { updateParticipant } from "../../utils/Network";
-import { JOINED_MEETING } from "../../common/constants";
-
+import { updateParticipant, addMetric } from "../../utils/ApiUtil";
+import { buildMetricsData } from "../../utils/SharedUtil";
 import "./JoinRoom.css";
 
 const JoinRoom = () => {
   const [roomJoined, setRoomJoined] = useState(false);
   const [callFrameState, setCallFrameState] = useState(null);
-  const [roomJoiningStatus, setRoomJoiningStatus] = useState("");
   const [roomUrl, setRoomUrl] = useState("");
 
   let callFrame = null;
+  let inervalId = useRef(null);
 
-  const getStats = async () => {
-    console.log("callFrame.getNetworkStats()", callFrame);
-    if (callFrameState) {
-      const stats = await callFrameState.getNetworkStats();
-      const sess = await callFrameState.room();
+  const onRoomUrlChange = (e) => setRoomUrl(e.target.value);
 
-      console.log("callFrame.getNetworkStats()", stats, sess);
-    }
+  const getNetworkStats = useCallback(
+    async (userId, roomName) => {
+      let intervalIndex = setInterval(async () => {
+        if (callFrameState) {
+          const networkStats = await callFrameState.getNetworkStats();
+          const metricsData = buildMetricsData(userId, networkStats, roomName);
+          await addMetric(metricsData);
+        } else {
+          clearInterval(inervalId);
+        }
+      }, 15000); // polling for stats after every 15 seconds
+      inervalId.current = intervalIndex;
+    },
+    [callFrameState]
+  );
+
+  const onMeetingJoined = useCallback(
+    async (userId) => {
+      const roomUrlArray = roomUrl.split("/");
+      const roomName = roomUrlArray[roomUrlArray.length - 1];
+      await updateParticipant(roomName, userId);
+      getNetworkStats(userId, roomName);
+      setRoomJoined(true);
+    },
+    [getNetworkStats, roomUrl]
+  );
+
+  const onMeetingLeft = () => {
+    setRoomJoined(false);
+    document.getElementById("joinCallFrame").innerHTML = "";
   };
 
-  const joinRoom = async () => {
+  const onJoinRoom = useCallback(async () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     callFrame = DailyIframe.createFrame(
       document.getElementById("joinCallFrame"),
@@ -39,48 +62,26 @@ const JoinRoom = () => {
     );
 
     callFrame
-      .on("loaded", (e) => {
-        console.log("loaded", e);
-      })
-      .on("joining-meeting", (e) => {
-        console.log("joining meeting", e);
-      })
       .on("joined-meeting", async (e) => {
-        const roomUrlArray = roomUrl.split("/");
-        const roomName = roomUrlArray[roomUrlArray.length - 1];
-        await updateParticipant(roomName, e.participants.local.user_id);
-        setRoomJoined(true);
-
-        console.log(
-          "joined meeting",
-          e,
-          roomName,
-          e.participants.local.user_id
-        );
+        onMeetingJoined(e.participants.local.user_id);
       })
       .on("error", (e) => {
         console.log("error", e);
       })
-      .on("participant-joined", (e) => {
-        console.log("participant joined", e);
-      })
-      .on("participant-updated", (e) => {
-        console.log("participant updatd", e);
-      })
-      .on("participant-left", (e) => {
-        console.log("participants left", e);
-      })
       .on("left-meeting", (e) => {
-        setRoomJoined(false);
         callFrame.leave();
-        callFrame = null;
-        document.getElementById("joinCallFrame").innerHTML = "";
-        console.log("left meeting", e);
+        callFrame.destory();
+        onMeetingLeft();
       });
 
     setCallFrameState(callFrame);
+    console.log("roomUrl", roomUrl);
     callFrame.join({ url: roomUrl, showLeaveButton: true });
-  };
+  }, [roomUrl]);
+
+  useEffect(() => {
+    return clearInterval(inervalId.current);
+  }, [inervalId]);
 
   return (
     <div className="data-container room-details-container">
@@ -90,10 +91,10 @@ const JoinRoom = () => {
           <input
             type="text"
             placeholder="Enter room url..."
-            onChange={(e) => setRoomUrl(e.target.value)}
+            onChange={onRoomUrlChange}
           />
           <span>Provide room url and join</span>
-          <button onClick={joinRoom} disabled={roomJoined}>
+          <button onClick={onJoinRoom} disabled={roomJoined}>
             Join room
           </button>
         </div>
@@ -104,7 +105,9 @@ const JoinRoom = () => {
           <div id="joinCallFrame"></div>
         </div>
         <div className="room-stats">
-          {roomJoined ? <button onClick={getStats}>Get stats</button> : null}
+          {roomJoined ? (
+            <button onClick={getNetworkStats}>Get stats</button>
+          ) : null}
         </div>
       </div>
     </div>

@@ -91,7 +91,12 @@
   justify-content: center;
 }
 
-.share-room-label span {
+.copy-url-section {
+  display: flex;
+  align-items: center;
+}
+
+.copy-url-section span {
   font-size: 14px;
   font-weight: 600;
   color: #000;
@@ -99,4 +104,17 @@
   border: 1px solid #ccc;
   padding: 4px 16px;
   border-radius: 5px;
+  margin-top: 10px;
+}
+
+.copy-url-section button {
+  font-size: 10px;
+  font-weight: 600;
+  height: 26px;
+  color: #000;
+  border: 0px;
+  padding: 0px 8px;
+  border-radius: 5px;
+  background: #1bebb9;
+  margin-left: 10px;
 }

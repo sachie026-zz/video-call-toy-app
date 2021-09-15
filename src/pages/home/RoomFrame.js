@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import DailyIframe from "@daily-co/daily-js";
 
-import { updateParticipant, addMetric } from "../../utils/Network";
+import { updateParticipant, addMetric } from "../../utils/ApiUtil";
+import { buildMetricsData } from "../../utils/SharedUtil";
 import "./Home.css";
 
 const RoomFrame = (props) => {
@@ -9,25 +10,20 @@ const RoomFrame = (props) => {
   let callFrame = null;
   let inervalId = null;
 
-  const getStats = async (userId) => {
+  const onCopyUrl = () => {
+    document.execCommand("copy");
+  };
+
+  const getNetworkStats = async (userId) => {
     inervalId = setInterval(async () => {
       if (callFrame) {
-        const stats = await callFrame.getNetworkStats();
-        console.log();
-        const metricsData = {
-          userid: userId,
-          roomname: roomName,
-          videoRecvBitsPerSecond: stats.stats.latest.videoRecvBitsPerSecond,
-          videoRecvPacketLoss: stats.stats.latest.videoRecvPacketLoss,
-          videoSendBitsPerSecond: stats.stats.latest.videoSendBitsPerSecond,
-          videoSendPacketLoss: stats.stats.latest.videoSendPacketLoss,
-        };
+        const networkStats = await callFrame.getNetworkStats();
+        const metricsData = buildMetricsData(userId, networkStats, roomName);
         await addMetric(metricsData);
-        console.log("callFrame.getNetworkStats()", callFrame, stats);
       } else {
         clearInterval(inervalId);
       }
-    }, 15000);
+    }, 15000); // polling for stats after every 15 seconds
   };
 
   useEffect(() => {
@@ -48,21 +44,19 @@ const RoomFrame = (props) => {
       );
 
       callFrame
-        .on("joined-meeting", (e) => {
-          // setUserId(e.participants.local.user_id);
-          updateParticipant(roomName, e.participants.local.user_id);
-          getStats(e.participants.local.user_id);
+        .on("joined-meeting", async (e) => {
+          await updateParticipant(roomName, e.participants.local.user_id);
+          getNetworkStats(e.participants.local.user_id);
         })
         .on("error", (e) => {
           console.log("error", e);
         })
         .on("left-meeting", (e) => {
-          onLeaveRoom();
           callFrame.leave();
-          callFrame = null;
+          callFrame.destroy();
           document.getElementById("callframe").innerHTML = "";
           clearInterval(inervalId);
-          console.log("left meeting", e);
+          onLeaveRoom();
         });
 
       callFrame.join({ url: roomData.url, showLeaveButton: true });
@@ -78,10 +72,12 @@ const RoomFrame = (props) => {
     <div className="frame-container">
       <div id="callframe"></div>
       <div className="share-room-label">
-        <span>{roomData ? roomData.url : "--"}</span>
-        Share room url with others
+        <span>Share URL below to invite others</span>
+        <div className="copy-url-section">
+          <span>{roomData ? roomData.url : "--"}</span>
+          <button onClick={onCopyUrl}>Copy URL</button>
+        </div>
       </div>
-      <button onClick={getStats}>Get stats</button>
     </div>
   );
 };

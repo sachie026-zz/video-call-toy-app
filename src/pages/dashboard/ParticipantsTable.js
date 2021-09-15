@@ -1,8 +1,9 @@
 import React from "react";
+
+import Table from "./Table/Table";
+import TableHeader from "./Table/TableHeader";
+import TableRow from "./Table/TableRow";
 import "./Dashboard.css";
-import Table from "./Table";
-import TableHeader from "./TableHeader";
-import TableRow from "./TableRow";
 
 const ParticipantsTable = (props) => {
   const { participants } = props;
@@ -20,4 +21,4 @@ const ParticipantsTable = (props) => {
   );
 };
 
-export default ParticipantsTable;
+export default React.memo(ParticipantsTable);

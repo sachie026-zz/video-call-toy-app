@@ -21,6 +21,7 @@
   border-radius: 5px;
   margin: 25px 0px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .room-details-section input {
@@ -60,6 +61,8 @@
   flex-direction: row;
   justify-content: center;  
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .room-frame {

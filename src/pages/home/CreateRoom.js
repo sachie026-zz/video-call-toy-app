@@ -5,6 +5,9 @@ const noop = () => null;
 
 const CreateRoom = (props) => {
   const { onCreateRoom, buttonDisabled, onNameChange } = props;
+
+  const onNameInputChange = (e) => onNameChange(e.target.value);
+
   return (
     <div>
       <div className="new-room-bar">
@@ -27,7 +30,7 @@ const CreateRoom = (props) => {
             <input
               type="text"
               placeholder="Enter room name..."
-              onChange={(e) => onNameChange(e.target.value)}
+              onChange={onNameInputChange}
             />
           </div>
         </div>
@@ -48,4 +51,4 @@ const CreateRoom = (props) => {
   );
 };
 
-export default CreateRoom;
+export default React.memo(CreateRoom);
