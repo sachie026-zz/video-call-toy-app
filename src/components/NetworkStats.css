@@ -1,0 +1,21 @@
+.network-stats-container {
+  margin-top: 50px;
+}
+
+.network-stats-label{
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  display: flex;
+}
+
+.netowrk-stats-row{
+  padding: 5px 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.netowrk-stats-row span{
+  color: #666;
+  font-size: 14px;  
+}
