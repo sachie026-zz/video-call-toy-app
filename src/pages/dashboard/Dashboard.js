@@ -5,18 +5,24 @@ import RoomsTable from "./RoomsTable";
 import ParticipantsTable from "./ParticipantsTable";
 import DashboardHeader from "./DashboardHeader";
 import MetricsData from "./Chart/MetricsData";
+import Loader from "../../components/Loader";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const [rooms, setRooms] = useState([]);
+  const [loadingState, setLoadingState] = useState(false);
   const [selectedRoomIndex, setSelectedRoomIndex] = useState(null);
   const [selectedParticipantIndex, setSelectedParticipantIndex] =
     useState(null);
 
   const fetchAllRooms = () => {
+    setLoadingState(true);
     getRooms()
       .then((response) => response.json())
-      .then((res) => setRooms(res));
+      .then((res) => {
+        setLoadingState(false);
+        setRooms(res);
+      });
   };
 
   const onDeleteClick = useCallback(async (name) => {
@@ -53,7 +59,7 @@ const Dashboard = () => {
           selectedRoomIndex ? rooms[selectedRoomIndex].name : ""
         }
       />
-
+      {loadingState && <Loader label="loading..." />}
       {selectedRoomIndex !== null ? (
         selectedParticipantIndex !== null ? (
           <MetricsData

@@ -9,10 +9,9 @@ import "./JoinRoom.css";
 
 const JoinRoom = () => {
   const [roomJoined, setRoomJoined] = useState(false);
-  // const [callFrameState, setCallFrameState] = useState(null);
   const [roomUrl, setRoomUrl] = useState("");
   const callFrameState = useRef(null);
-  const networkStatRef = useRef(null);
+  const [networkStats, setNetworkStats] = useState(null);
 
   let callFrame = null;
   let inervalId = useRef(null);
@@ -25,7 +24,7 @@ const JoinRoom = () => {
         if (callFrameState.current) {
           const networkStats = await callFrameState.current.getNetworkStats();
           const metricsData = buildMetricsData(userId, networkStats, roomName);
-          networkStatRef.current = networkStats.stats.latest;
+          setNetworkStats(networkStats.stats.latest);
           await addMetric(metricsData);
         }
       }, 15000); // polling for stats after every 15 seconds
@@ -47,7 +46,8 @@ const JoinRoom = () => {
 
   const onMeetingLeft = () => {
     setRoomJoined(false);
-    networkStatRef.current = null;
+    setRoomUrl("");
+    setNetworkStats(false);
     document.getElementById("joinCallFrame").innerHTML = "";
   };
 
@@ -94,6 +94,7 @@ const JoinRoom = () => {
           <input
             type="text"
             placeholder="Enter room url..."
+            value={roomUrl}
             onChange={onRoomUrlChange}
           />
           <span>Provide room url and join</span>
@@ -108,9 +109,7 @@ const JoinRoom = () => {
           <div id="joinCallFrame"></div>
         </div>
         <div className="room-stats">
-          {networkStatRef && networkStatRef.current ? (
-            <NetworkStats networkStats={networkStatRef.current} />
-          ) : null}
+          {networkStats ? <NetworkStats networkStats={networkStats} /> : null}
         </div>
         {!roomJoined ? <NoRoomJoined /> : null}
       </div>

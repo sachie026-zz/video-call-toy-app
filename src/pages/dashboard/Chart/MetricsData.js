@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import StockChart from "./StockChart";
+import Loader from "../../../components/Loader";
 import { getMetrics } from "../../../utils/ApiUtil";
 
 const MetricsData = (props) => {
   const { selectedParticipantId, roomName } = props;
-  const loadingState = useRef("");
+  const [loadingState, setLoadingState] = useState(false);
   const [participantMetricsData, setParticipantsMetricsData] = useState([]);
 
   const [videoSendData, setVideoSendData] = useState([]);
@@ -45,11 +46,11 @@ const MetricsData = (props) => {
   }, [participantMetricsData]);
 
   const fetchMetricsData = useCallback(async () => {
-    loadingState.current = "fetching...";
+    setLoadingState(true);
     await getMetrics(selectedParticipantId, roomName)
       .then((response) => response.json())
       .then((res) => {
-        loadingState.current = "";
+        setLoadingState(false);
         setParticipantsMetricsData(res);
       });
   }, [roomName, selectedParticipantId]);
@@ -66,7 +67,8 @@ const MetricsData = (props) => {
 
   return (
     <div className="metrics-data-container">
-      <span className="fetching-data">{loadingState.current}</span>
+      {loadingState && <Loader label={loadingState.current} />}
+
       <StockChart title="Video sending" metricsData={videoSendData} />
       <StockChart
         title="Packet loss send"

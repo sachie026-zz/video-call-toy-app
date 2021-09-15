@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import DailyIframe from "@daily-co/daily-js";
 
 import NetworkStats from "../../components/NetworkStats";
@@ -7,7 +7,7 @@ import { buildMetricsData } from "../../utils/SharedUtil";
 import "./Home.css";
 
 const RoomFrame = (props) => {
-  const statsData = useRef(null);
+  const [statsData, setStatData] = useState(null);
   const { roomData, onLeaveRoom, roomName } = props;
   let callFrame = null;
   let inervalId = null;
@@ -25,7 +25,7 @@ const RoomFrame = (props) => {
       if (callFrame) {
         const networkStats = await callFrame.getNetworkStats();
         const metricsData = buildMetricsData(userId, networkStats, roomName);
-        statsData.current = networkStats.stats.latest;
+        setStatData(networkStats.stats.latest);
         await addMetric(metricsData);
       } else {
         clearInterval(inervalId);
@@ -83,9 +83,7 @@ const RoomFrame = (props) => {
             <span>{roomData ? roomData.url : "--"}</span>
           </div>
         </div>
-        {statsData && statsData.current ? (
-          <NetworkStats networkStats={statsData.current} />
-        ) : null}
+        {statsData ? <NetworkStats networkStats={statsData} /> : null}
       </div>
     </div>
   );

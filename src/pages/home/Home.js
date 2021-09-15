@@ -13,7 +13,9 @@ const Home = () => {
   const onCreateRoom = useCallback(() => {
     createRoom(roomName)
       .then((response) => response.json())
-      .then((res) => setRoomData(res));
+      .then((res) => {
+        setRoomData(res);
+      });
   }, [roomName]);
 
   const updateRoomCreated = useCallback(() => {
