@@ -18,7 +18,7 @@ const Home = () => {
       .then((response) => response.json())
       .then((res) => {
         if (res && res.name === "Error") {
-          console.log(
+          alert(
             "Error while creating room! check if room with provided name is already present"
           );
         } else {
