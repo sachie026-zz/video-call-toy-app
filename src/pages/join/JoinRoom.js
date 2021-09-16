@@ -73,9 +73,9 @@ const JoinRoom = () => {
         console.log("error", e);
       })
       .on("left-meeting", (e) => {
+        onMeetingLeft();
         callFrame.leave();
         callFrame.destory();
-        onMeetingLeft();
       });
 
     callFrameState.current = callFrame;
