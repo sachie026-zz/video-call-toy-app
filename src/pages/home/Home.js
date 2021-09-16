@@ -3,19 +3,30 @@ import React, { useState, useEffect, useCallback } from "react";
 import { createRoom } from "../../utils/ApiUtil";
 import CreateRoom from "./CreateRoom";
 import RoomFrame from "./RoomFrame";
+import Loader from "../../components/Loader/Loader";
 import "./Home.css";
 
 const Home = () => {
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomData, setRoomData] = useState(null);
   const [roomName, setRoomName] = useState("");
+  const [creatingRoom, setCreatingRoom] = useState(false);
 
   const onCreateRoom = useCallback(() => {
+    setCreatingRoom(true);
     createRoom(roomName)
       .then((response) => response.json())
       .then((res) => {
-        setRoomData(res);
-      });
+        if (res && res.name === "Error") {
+          console.log(
+            "Error while creating room! check if room with provided name is already present"
+          );
+        } else {
+          setRoomData(res);
+        }
+        setCreatingRoom(false);
+      })
+      .catch((err) => console.log(err));
   }, [roomName]);
 
   const updateRoomCreated = useCallback(() => {
@@ -34,6 +45,7 @@ const Home = () => {
 
   return (
     <div className="data-container">
+      {creatingRoom && <Loader label="creating room..." />}
       {roomCreated ? (
         <RoomFrame
           roomData={roomData}
