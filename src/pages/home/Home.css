@@ -102,7 +102,8 @@
 
 .copy-url-section {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .copy-url-section span {
@@ -125,5 +126,5 @@
   padding: 0px 8px;
   border-radius: 5px;
   background: #1bebb9;
-  margin-left: 10px;
+  cursor: pointer;
 }

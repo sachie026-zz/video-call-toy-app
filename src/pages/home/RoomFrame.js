@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import DailyIframe from "@daily-co/daily-js";
+import copy from "copy-to-clipboard";
 
 import NetworkStats from "../../components/NetworkStats/NetworkStats";
 import { updateParticipant, addMetric } from "../../utils/ApiUtil";
@@ -12,7 +13,7 @@ const RoomFrame = (props) => {
   let callFrame = null;
   let inervalId = null;
 
-  // const onCopyUrl = () => document.execCommand("copy");
+  const onCopyUrl = useCallback(() => copy(roomData ? roomData.url : ""), [roomData]);
 
   const onMeetingLeft = () => {
     document.getElementById("callframe").innerHTML = "";
@@ -81,6 +82,7 @@ const RoomFrame = (props) => {
           <span>Share URL below to invite others</span>
           <div className="copy-url-section">
             <span>{roomData ? roomData.url : "--"}</span>
+            <button onClick={onCopyUrl}>Copy URL</button>
           </div>
         </div>
         {statsData ? <NetworkStats networkStats={statsData} /> : null}
