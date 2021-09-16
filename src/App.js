@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
 import JoinRoom from "./pages/join/JoinRoom";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 
 import "./App.css";
 

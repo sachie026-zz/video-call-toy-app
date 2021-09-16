@@ -5,7 +5,7 @@ import RoomsTable from "./RoomsTable";
 import ParticipantsTable from "./ParticipantsTable";
 import DashboardHeader from "./DashboardHeader";
 import MetricsData from "./Chart/MetricsData";
-import Loader from "../../components/Loader";
+import Loader from "../../components/Loader/Loader";
 import "./Dashboard.css";
 
 const Dashboard = () => {

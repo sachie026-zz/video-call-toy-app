@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import StockChart from "./StockChart";
-import Loader from "../../../components/Loader";
+import Loader from "../../../components/Loader/Loader";
 import { getMetrics } from "../../../utils/ApiUtil";
 
 const MetricsData = (props) => {
