@@ -5,12 +5,16 @@ import TableHeader from "./Table/TableHeader";
 import TableRow from "./Table/TableRow";
 import "./Dashboard.css";
 
+// keeping out the fixed columns, to prevent from re-rendering
+const roomColumns = ["Room name", "Date created"];
+const noRoomColumns = ["", "No rooms"];
+
 const RoomsTable = (props) => {
   const { rooms, onFirstColumnClick, onDeleteClick } = props;
 
   return (
     <Table>
-      <TableHeader columns={["Room name", "Date created"]} compkey="rooms" />
+      <TableHeader columns={roomColumns} compkey="rooms" />
       {rooms.map((room, index) => (
         <TableRow
           columns={[room.name, new Date(room.created_at).toString()]}
@@ -23,7 +27,7 @@ const RoomsTable = (props) => {
         />
       ))}
       {rooms.length === 0 ? (
-        <TableRow columns={["", "No rooms"]} key="roomnodata" />
+        <TableRow columns={noRoomColumns} key="roomnodata" />
       ) : null}
     </Table>
   );

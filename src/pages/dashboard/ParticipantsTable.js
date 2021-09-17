@@ -5,14 +5,15 @@ import TableHeader from "./Table/TableHeader";
 import TableRow from "./Table/TableRow";
 import "./Dashboard.css";
 
+const participantsColumns = ["User id"];
+const noParticipantsColumns = ["", "No participants"];
+
 const ParticipantsTable = (props) => {
   const { participants, onFirstColumnClick } = props;
 
-  const onShowMetrics = () => {};
-
   return (
     <Table>
-      <TableHeader columns={["User id"]} compkey="participant"/>
+      <TableHeader columns={participantsColumns} compkey="participant" />
       {participants.map((participant, index) => (
         <TableRow
           columns={[participant.userid, ""]}
@@ -20,11 +21,10 @@ const ParticipantsTable = (props) => {
           rowKey={`participants${index}`}
           index={index}
           onFirstColumnClick={onFirstColumnClick}
-          onShowMetrics={onShowMetrics}
         />
       ))}
       {participants.length === 0 ? (
-        <TableRow columns={["", "No participants"]} key="roomnodata" />
+        <TableRow columns={noParticipantsColumns} key="noparticipantsdata" />
       ) : null}
     </Table>
   );
