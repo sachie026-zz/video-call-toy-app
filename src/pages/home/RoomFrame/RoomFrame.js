@@ -81,7 +81,7 @@ const RoomFrame = (props) => {
         callFrame.destroy();
       }
     };
-  }, [callFrame, inervalId, onMeetingLeft]);
+  }, [callFrame, inervalId]);
 
   return (
     <div className="frame-container">
