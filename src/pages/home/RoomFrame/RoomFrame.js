@@ -74,6 +74,7 @@ const RoomFrame = (props) => {
   }, [roomData]);
 
   useEffect(() => {
+    // clear the polling while unmount
     return () => {
       clearInterval(inervalId);
       if (callFrame) {

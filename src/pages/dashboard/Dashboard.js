@@ -32,8 +32,10 @@ const Dashboard = () => {
 
   const goBack = useCallback(() => {
     if (selectedParticipantIndex !== null) {
+      // if participant is selected, move back to participants list from metrics page
       setSelectedParticipantIndex(null);
     } else if (selectedRoomIndex !== null) {
+      // if room is selected, move back to rooms list page from participants page
       setSelectedRoomIndex(null);
     }
   }, [selectedParticipantIndex, selectedRoomIndex]);
@@ -60,6 +62,11 @@ const Dashboard = () => {
         }
       />
       {loadingState && <Loader label="loading..." />}
+
+      {/* 
+        - Check if any room is selected i.e. selectedRoomIndex !== null
+        - Check if any participant is selected   i.e.  selectedParticipantIndex !== null 
+      */}
 
       {selectedRoomIndex !== null ? (
         selectedParticipantIndex !== null ? (

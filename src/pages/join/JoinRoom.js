@@ -85,6 +85,7 @@ const JoinRoom = () => {
   }, [roomUrl]);
 
   useEffect(() => {
+    // clear the polling while unmount
     return clearInterval(inervalId.current);
   }, [inervalId]);
 

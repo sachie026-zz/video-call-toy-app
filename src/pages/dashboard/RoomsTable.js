@@ -5,7 +5,7 @@ import TableHeader from "./Table/TableHeader";
 import TableRow from "./Table/TableRow";
 import "./Dashboard.css";
 
-// keeping out the fixed columns, to prevent from re-rendering
+// keeping out the fixed columns from component, to prevent from re-rendering
 const roomColumns = ["Room name", "Date created"];
 const noRoomColumns = ["", "No rooms"];
 
