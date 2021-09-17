@@ -1,5 +1,7 @@
 import React from "react";
 
+import RoomTable from "./RoomTable";
+import RoomTableRow from "./RoomTableRow";
 import CreateRoomHeader from "./CreateRoomHeader";
 import CreateRoomPrivacy from "./CreateRoomPrivacy";
 import CreateRoomInput from "./CreateRoomInput";
@@ -14,14 +16,14 @@ const CreateRoom = (props) => {
         onCreateRoom={onCreateRoom}
         buttonDisabled={buttonDisabled}
       />
-      <div className="new-room-table">
-        <div className="new-room-table-row border-bottom">
+      <RoomTable>
+        <RoomTableRow>
           <CreateRoomInput onNameInputChange={onNameInputChange} />
-        </div>
-        <div className="new-room-table-row">
+        </RoomTableRow>
+        <RoomTableRow>
           <CreateRoomPrivacy />
-        </div>
-      </div>
+        </RoomTableRow>
+      </RoomTable>
     </div>
   );
 };
