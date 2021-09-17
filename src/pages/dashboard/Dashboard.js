@@ -15,6 +15,14 @@ const Dashboard = () => {
   const [selectedParticipantIndex, setSelectedParticipantIndex] =
     useState(null);
 
+  const getSelectedParticipantUserId =
+    selectedRoomIndex !== null && selectedParticipantIndex !== null
+      ? rooms[selectedRoomIndex].participants[selectedParticipantIndex].userid
+      : "";
+
+  const selectedRoomName =
+    selectedRoomIndex !== null ? rooms[selectedRoomIndex].name : "";
+
   const fetchAllRooms = () => {
     setLoadingState(true);
     getRooms()
@@ -57,9 +65,7 @@ const Dashboard = () => {
       <DashboardHeader
         selectedRoomIndex={selectedRoomIndex}
         goBack={goBack}
-        selectedRoomName={
-          selectedRoomIndex ? rooms[selectedRoomIndex].name : ""
-        }
+        selectedRoomName={selectedRoomName}
       />
       {loadingState && <Loader label="loading..." />}
 
@@ -71,16 +77,8 @@ const Dashboard = () => {
       {selectedRoomIndex !== null ? (
         selectedParticipantIndex !== null ? (
           <MetricsData
-            selectedParticipantId={
-              selectedRoomIndex !== null
-                ? rooms[selectedRoomIndex].participants[
-                    selectedParticipantIndex
-                  ].userid
-                : ""
-            }
-            roomName={
-              selectedRoomIndex !== null ? rooms[selectedRoomIndex].name : ""
-            }
+            selectedParticipantId={getSelectedParticipantUserId}
+            roomName={selectedRoomName}
           />
         ) : (
           <ParticipantsTable
