@@ -107,12 +107,12 @@
 }
 
 .copy-url-section span {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: #000;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  padding: 4px 16px;
+  padding: 4px 8px;
   border-radius: 5px;
   margin-top: 10px;
 }
