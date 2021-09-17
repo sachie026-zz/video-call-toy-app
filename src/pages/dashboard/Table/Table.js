@@ -5,4 +5,4 @@ const Table = (props) => {
   return <div className="room-table">{children}</div>;
 };
 
-export default Table;
+export default React.memo(Table);

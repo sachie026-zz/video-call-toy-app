@@ -27,4 +27,4 @@ const TableRow = (props) => {
   );
 };
 
-export default TableRow;
+export default React.memo(TableRow);

@@ -11,4 +11,4 @@ const TableHeader = (props) => {
   );
 };
 
-export default TableHeader;
+export default React.memo(TableHeader);
