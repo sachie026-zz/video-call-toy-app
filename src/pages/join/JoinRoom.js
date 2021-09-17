@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import DailyIframe from "@daily-co/daily-js";
 
-import NetworkStats from "../../components/NetworkStats/NetworkStats";
+import NetworkStats from "../../components/NetworkStats";
 import NoRoomJoined from "./NoRoomJoined";
 import RoomDetails from "./RoomDetails";
 import { updateParticipant, addMetric } from "../../utils/ApiUtil";

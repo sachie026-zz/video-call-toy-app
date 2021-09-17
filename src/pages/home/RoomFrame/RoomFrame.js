@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import DailyIframe from "@daily-co/daily-js";
 import copy from "copy-to-clipboard";
 
-import NetworkStats from "../../../components/NetworkStats/NetworkStats";
+import NetworkStats from "../../../components/NetworkStats";
 import ShareRoomUrl from "./ShareRoomUrl";
 import { updateParticipant, addMetric } from "../../../utils/ApiUtil";
 import { buildMetricsData } from "../../../utils/SharedUtil";

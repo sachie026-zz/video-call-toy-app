@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./pages/home/Home";
-import Dashboard from "./pages/dashboard/Dashboard";
-import JoinRoom from "./pages/join/JoinRoom";
-import Header from "./components/Header/Header";
+import Home from "./pages/home";
+import Dashboard from "./pages/dashboard";
+import JoinRoom from "./pages/join";
+import Header from "./components/Header";
 
 import "./App.css";
 

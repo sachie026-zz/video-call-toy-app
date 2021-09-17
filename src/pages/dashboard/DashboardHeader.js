@@ -1,6 +1,6 @@
 import React from "react";
 
-import BackButton from "../../components/BackButton/BackButton";
+import BackButton from "../../components/BackButton";
 import "./Dashboard.css";
 
 const DashboardHeader = (props) => {
