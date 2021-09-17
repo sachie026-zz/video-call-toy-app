@@ -16,4 +16,4 @@ const CreateRoomHeader = (props) => {
   );
 };
 
-export default CreateRoomHeader;
+export default React.memo(CreateRoomHeader);

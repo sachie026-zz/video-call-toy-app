@@ -17,4 +17,4 @@ const CreateRoomPrivacy = () => {
   );
 };
 
-export default CreateRoomPrivacy;
+export default React.memo(CreateRoomPrivacy);

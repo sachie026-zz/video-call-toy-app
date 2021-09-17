@@ -19,4 +19,4 @@ const CreateRoomInput = (props) => {
   );
 };
 
-export default CreateRoomInput;
+export default React.memo(CreateRoomInput);

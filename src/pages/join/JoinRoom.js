@@ -3,6 +3,7 @@ import DailyIframe from "@daily-co/daily-js";
 
 import NetworkStats from "../../components/NetworkStats/NetworkStats";
 import NoRoomJoined from "./NoRoomJoined";
+import RoomDetails from "./RoomDetails";
 import { updateParticipant, addMetric } from "../../utils/ApiUtil";
 import { buildMetricsData } from "../../utils/SharedUtil";
 import "./JoinRoom.css";
@@ -45,6 +46,7 @@ const JoinRoom = () => {
   );
 
   const onMeetingLeft = () => {
+    clearInterval(inervalId.current);
     setRoomJoined(false);
     setRoomUrl("");
     setNetworkStats(null);
@@ -88,21 +90,12 @@ const JoinRoom = () => {
 
   return (
     <div className="data-container room-details-container">
-      <div className="room-details-section-container">
-        <span className="new-room-label">Join room</span>
-        <div className="room-details-section">
-          <input
-            type="text"
-            placeholder="Enter room url..."
-            value={roomUrl}
-            onChange={onRoomUrlChange}
-          />
-          <span>Provide room url and join</span>
-          <button onClick={onJoinRoom} disabled={roomJoined}>
-            Join room
-          </button>
-        </div>
-      </div>
+      <RoomDetails
+        roomUrl={roomUrl}
+        onRoomUrlChange={onRoomUrlChange}
+        onJoinRoom={onJoinRoom}
+        roomJoined={roomJoined}
+      />
 
       <div className="room-join-section">
         <div className="room-frame">
