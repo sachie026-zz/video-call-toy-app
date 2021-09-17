@@ -1,49 +1,26 @@
-import React, { useCallback } from "react";
+import React from "react";
+
+import CreateRoomHeader from "./CreateRoomHeader";
+import CreateRoomPrivacy from "./CreateRoomPrivacy";
+import CreateRoomInput from "./CreateRoomInput";
 import "./Home.css";
 
 const CreateRoom = (props) => {
-  const noop = useCallback(() => null, []);
   const { onCreateRoom, buttonDisabled, onNameChange } = props;
-
   const onNameInputChange = (e) => onNameChange(e.target.value);
 
   return (
     <div>
-      <div className="new-room-bar">
-        <span className="new-room-label">Create a new room</span>
-        <button
-          className="create-button"
-          onClick={onCreateRoom}
-          disabled={buttonDisabled}
-        >
-          Create room
-        </button>
-      </div>
+      <CreateRoomHeader
+        onCreateRoom={onCreateRoom}
+        buttonDisabled={buttonDisabled}
+      />
       <div className="new-room-table">
         <div className="new-room-table-row border-bottom">
-          <div className="new-room-table-column">
-            <span>Room name</span>
-            <span>Required</span>
-          </div>
-          <div className="new-room-input">
-            <input
-              type="text"
-              placeholder="Enter room name..."
-              onChange={onNameInputChange}
-            />
-          </div>
+          <CreateRoomInput onNameInputChange={onNameInputChange} />
         </div>
         <div className="new-room-table-row">
-          <div className="new-room-table-column">
-            <span>Privacy</span>
-            <span>Limit who can access the room</span>
-          </div>
-          <div className="new-room-radio">
-            <input type="radio" onChange={noop} checked />
-            <span className="privacy-label">
-              Public: anyone with the link can join
-            </span>
-          </div>
+          <CreateRoomPrivacy />
         </div>
       </div>
     </div>
