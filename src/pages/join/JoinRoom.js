@@ -80,6 +80,7 @@ const JoinRoom = () => {
         callFrame.destory();
       });
 
+    // using ref here to preserve the callframe identity
     callFrameState.current = callFrame;
     callFrame.join({ url: roomUrl, showLeaveButton: true });
   }, [roomUrl]);

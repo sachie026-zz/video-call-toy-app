@@ -23,22 +23,17 @@ const MetricsData = (props) => {
     const tempSendPacketLossData = [];
 
     participantMetricsData.forEach((metric) => {
-      tempRecieveData.push([
-        new Date(metric.created_at).getTime(),
-        metric.videoRecvBitsPerSecond,
-      ]);
-      tempSendData.push([
-        new Date(metric.created_at).getTime(),
-        metric.videoSendBitsPerSecond,
-      ]);
-      tempSendPacketLossData.push([
-        new Date(metric.created_at).getTime(),
-        metric.videoSendPacketLoss,
-      ]);
-      tempRecievePacketLosttData.push([
-        new Date(metric.created_at).getTime(),
-        metric.videoRecvPacketLoss,
-      ]);
+      /*  
+        Segregate metrics data for recieve/send inluding packet loss.
+        store it in temp arrays while looping and then to state variable, 
+        to prevent continuous re-rendering
+       */
+      const timeStamp = new Date(metric.created_at).getTime();
+
+      tempRecieveData.push([timeStamp, metric.videoRecvBitsPerSecond]);
+      tempSendData.push([timeStamp, metric.videoSendBitsPerSecond]);
+      tempSendPacketLossData.push([timeStamp, metric.videoSendPacketLoss]);
+      tempRecievePacketLosttData.push([timeStamp, metric.videoRecvPacketLoss]);
     });
 
     setVideoSendData(tempSendData);
