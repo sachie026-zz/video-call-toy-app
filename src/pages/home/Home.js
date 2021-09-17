@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import { createRoom } from "../../utils/ApiUtil";
-import CreateRoom from "./CreateRoom";
+import CreateRoom from "./CreateRoom/CreateRoom";
 import RoomFrame from "./RoomFrame";
 import Loader from "../../components/Loader/Loader";
 import "./Home.css";
