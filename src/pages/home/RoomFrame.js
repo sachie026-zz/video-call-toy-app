@@ -13,13 +13,16 @@ const RoomFrame = (props) => {
   let callFrame = null;
   let inervalId = null;
 
-  const onCopyUrl = useCallback(() => copy(roomData ? roomData.url : ""), [roomData]);
+  const onCopyUrl = useCallback(
+    () => copy(roomData ? roomData.url : ""),
+    [roomData]
+  );
 
-  const onMeetingLeft = () => {
+  const onMeetingLeft = useCallback(() => {
     document.getElementById("callframe").innerHTML = "";
     clearInterval(inervalId);
     onLeaveRoom();
-  };
+  }, [inervalId, onLeaveRoom]);
 
   const getNetworkStats = async (userId) => {
     inervalId = setInterval(async () => {
@@ -71,8 +74,13 @@ const RoomFrame = (props) => {
   }, [roomData]);
 
   useEffect(() => {
-    return clearInterval(inervalId);
-  }, [inervalId]);
+    return () => {
+      clearInterval(inervalId);
+      if (callFrame) {
+        callFrame.destroy();
+      }
+    };
+  }, [callFrame, inervalId, onMeetingLeft]);
 
   return (
     <div className="frame-container">

@@ -21,6 +21,7 @@ const MetricsData = (props) => {
     const tempSendData = [];
     const tempRecievePacketLosttData = [];
     const tempSendPacketLossData = [];
+
     participantMetricsData.forEach((metric) => {
       tempRecieveData.push([
         new Date(metric.created_at).getTime(),
@@ -39,6 +40,7 @@ const MetricsData = (props) => {
         metric.videoRecvPacketLoss,
       ]);
     });
+
     setVideoSendData(tempSendData);
     setVideoSendPacketLossData(tempSendPacketLossData);
     setVideoRecieveData(tempRecieveData);

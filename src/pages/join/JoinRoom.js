@@ -47,7 +47,7 @@ const JoinRoom = () => {
   const onMeetingLeft = () => {
     setRoomJoined(false);
     setRoomUrl("");
-    setNetworkStats(false);
+    setNetworkStats(null);
     document.getElementById("joinCallFrame").innerHTML = "";
   };
 

@@ -60,6 +60,7 @@ const Dashboard = () => {
         }
       />
       {loadingState && <Loader label="loading..." />}
+
       {selectedRoomIndex !== null ? (
         selectedParticipantIndex !== null ? (
           <MetricsData
